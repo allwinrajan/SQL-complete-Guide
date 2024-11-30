@@ -1,0 +1,74 @@
+//TRIGGERS CREATION
+
+SQL> create or replace trigger dep
+  2  before
+  3  update or delete
+  4  of loc
+  5  on dept
+  6  for each row
+  7  enable
+  8  declare
+  9  begin
+ 10  update emp
+ 11  set sal=sal+50;
+ 12  end;
+ 13  /
+
+Trigger created.
+
+
+SQL> select sal from emp;
+
+       SAL
+----------
+       800
+      1600
+      2975
+      2850
+      2450
+      3000
+      5000
+      1500
+      1100
+       950
+      3300
+      1365
+
+SQL> update dept
+  2  set loc='Ramnad'
+  3  where deptno=20;
+
+1 row updated.
+
+       SAL
+----------
+       850
+      1650
+      3025
+      2900
+      2500
+      3050
+      5050
+      1550
+      1150
+      1000
+      3350
+      1415
+
+12 rows selected.
+********************************************************************************************************************************
+//create the trigger to insert the record
+
+SQL> create or replace trigger salg
+  2  before
+  3  update
+  4  of sal
+  5  on emp
+  6  for each row
+  7  enable
+  8  begin
+  9  insert into salgrade values(101,300,800);
+ 10  end;
+ 11  /
+
+Trigger created.

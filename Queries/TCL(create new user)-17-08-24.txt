@@ -1,0 +1,146 @@
+
+SQL*Plus: Release 11.2.0.1.0 Production on Sat Aug 17 16:47:36 2024
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: scott
+Enter password:
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> show user
+USER is "SYSTEM"
+
+1)//create new user//
+
+SQL> create user nic
+  2  identified by nic;
+
+User created.
+
+SQL> grant connect to nic;
+
+Grant succeeded.
+
+SQL> grant create table to nic;
+
+Grant succeeded.
+
+SQL> grant create view to nic;
+
+Grant succeeded.
+
+SQL> grant unlimited tablespace to nic;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: scott
+Enter password:
+Connected.
+
+2).//grand permission to the user//
+
+SQL> grant select,update,delete,alter on dept to nic;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: nic
+Enter password:
+Connected.
+
+3).//ALTER THE TABLE//
+
+SQL> alter table scott.dept
+  2  drop column dname;
+
+Table altered.
+
+SQL> select *
+  2  from scott.dept;
+
+    DEPTNO LOC
+---------- -------------
+        10 NEW YORK
+        20 DALLAS
+        30 CHICAGO
+        40 BOSTON
+
+4.)\\CREATE THE TABLE TO THE USER//
+
+SQL> create table empp
+  2  ( ename varchar(50) unique
+  3  ,doj date,
+  4  sal number(8),
+  5  gmail varchar(50));
+
+Table created.
+
+5.)//INSERT THE ROWS TO THE TABLE//
+
+
+SQL> insert into empp values('allwin','21-JUN-2024',10000,'allwin@gmail.com');
+
+1 row created.
+
+SQL> insert into empp values('benjeo','20-jun-2024',10000,'benjeo@gmail.com');
+
+1 row created.
+
+6.)//CREATE THE VIEW &INSERT THE TABLE INSIDE THE VIEW//
+
+
+SQL> create view nicv
+  2  as
+  3  select *
+  4  from empp;
+
+View created.
+
+7.)\\GRAND PERMISSION TO THE HR USER//
+
+SQL> grant select,update,delete,insert on nicv to hr;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: hr
+Enter password:
+Connected.
+SQL> select *
+  2  from nic.nicv;
+
+ENAME                                              DOJ              SAL
+-------------------------------------------------- --------- ----------
+GMAIL
+--------------------------------------------------
+allwin                                             21-JUN-24      10000
+allwin@gmail.com
+
+benjeo                                             20-JUN-24      10000
+benjeo@gmail.com
+
+
+SQL> set lines 100 pages 100
+SQL> select *
+  2  from nic.nicv;
+
+ENAME                                              DOJ              SAL
+-------------------------------------------------- --------- ----------
+GMAIL
+--------------------------------------------------
+allwin                                             21-JUN-24      10000
+allwin@gmail.com
+
+benjeo                                             20-JUN-24      10000
+benjeo@gmail.com
+
+
+SQL>

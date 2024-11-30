@@ -1,0 +1,213 @@
+
+SQL*Plus: Release 11.2.0.1.0 Production on Fri Aug 9 16:54:16 2024
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: scott
+Enter password:
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> select lines 100 pages 100
+  2  select *
+  3  from tab;
+select lines 100 pages 100
+             *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select *
+  2  from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BONUS                          TABLE
+DEPT                           TABLE
+EMP                            TABLE
+SALGRADE                       TABLE
+
+SQL> set lines 100 pages 100
+SQL> create table chock
+  2  ( cid number(5) unique not null,
+       cname varchar(30),
+       cost number(10,2) not null check(cost>10),
+       ex_date date,
+       brand varchar(50) not null);
+
+Table created.
+
+SQL> create table
+  2  ( pid varchar(30) unique not null
+  3  , pname varchar(70),
+  4  cost number(10,2) not null check(cost>10),
+  5  );
+( pid varchar(30) unique not null
+*
+ERROR at line 2:
+ORA-00903: invalid table name
+
+
+SQL> create table brand
+  2  ( pid varchar(30) unique not null
+  3  , pname varchar(70),
+  4  cost number(10,2) not null check(cost>10);
+cost number(10,2) not null check(cost>10)
+                                        *
+ERROR at line 4:
+ORA-00907: missing right parenthesis
+
+
+SQL> create table brand
+  2  ( pid varchar(30) unique not null
+  3  , pname varchar(70),
+  4  cost number(10,2) not null check(cost>10));
+
+Table created.
+
+SQL> create table prod
+  2  ( pid number(5) primary key,
+  3   pname varchar(100),
+  4  cost number(10,2));
+
+Table created.
+
+SQL> create table cust
+  2  ( cid number(5) primary key,
+  3  cname varchar(50) not null,
+  4  phno number(10) unique not null check(length(phno)=10),
+  5  pid number(5),
+  6  foreign key(pid) references pid(prod));
+foreign key(pid) references pid(prod))
+                            *
+ERROR at line 6:
+ORA-00942: table or view does not exist
+
+
+SQL> create table cust
+  2  ( cid number(5) primary key,
+  3  cname varchar(50) not null,
+  4  phno number(10) unique not null check(length(phno)=10),
+  5  pid number(5),
+  6  foreign key(pid) references prod(pid));
+
+Table created.
+
+SQL> create table Bemp
+  2  ( empno number(5) primary key
+  3  ,ename varchar(50) not nul,
+  4  sal number(10) not null,
+  5  gmail varchar(30) unique
+  6  );
+,ename varchar(50) not nul,
+                       *
+ERROR at line 3:
+ORA-00905: missing keyword
+
+
+
+SQL> create table Bemp
+  2  ( empno number(5) primary key
+  3  ,ename varchar(50) not nul,
+  4  sal number(10) not null,
+  5  gmail varchar(30) unique
+  6
+SQL> create table Bemp
+  2  ( empno number(5) primary key
+  3  ,ename varchar(50) not null,
+  4  sal number(10) not null,
+  5  gmail varchar(30) unique );
+
+Table created.
+
+SQL> create table  B_cust
+  2  ( cid number(5) primary key,
+  3  cname varchar(50),
+  4  ph_no number(10) check(length(ph_no)=10)
+  5  ,pnicode number(8),
+  6  areano number(5),
+  7  empno number(5),
+  8  foreign key(empno) references bemp(empno));
+
+Table created.
+
+SQL> create table transc
+  2  ( utrno number(16) primary key,
+  3   T_loc varchar(20) not null,
+  4   T_date date,
+  5   T_ammount number(10) not null,
+  6  cid number(5)
+  7  foreign key(cid) references B_cust(cid));
+foreign key(cid) references B_cust(cid))
+*
+ERROR at line 7:
+ORA-00907: missing right parenthesis
+
+
+SQL> create table transc
+  2  ( utrno number(16) primary key,
+  3   T_loc varchar(20) not null,
+  4   T_date date,
+  5   T_ammount number(10) not null,
+  6  cid number(5),
+  7  foreign key(cid) references B_cust(cid));
+
+Table created.
+
+SQL> create table B_acc
+  2  (
+  3  sav_acc number(16) unique not null,
+  4  cur_acc number(16) unique not null,
+  5  sal_acc number(16) unique not null,
+  6  std_acc number(16( unique not null,
+  7  join_acc number
+  8
+SQL> create table B_acc
+  2  (
+  3  sav_acc number(16) unique not null,
+  4  cur_acc number(16) unique not null,
+  5  sal_acc number(16) unique not null,
+  6  std_acc number(16( unique not null,
+  7
+SQL> create table B_acc
+  2  (
+  3  sav_acc number(16) unique not null,
+  4  cur_acc number(16) unique not null,
+  5  sal_acc number(16) unique not null,
+  6  std_acc number(16) unique not null,
+  7  join_acc number(16) unique not null,
+  8  cid number(5),
+  9  foreign key(cid) references B_cust(cid),
+ 10  utrno number(16),
+ 11  foreign key(utrno) references transc(utrno));
+
+Table created.
+
+SQL> create table B-branch
+  2  (
+  3  bid number(5) primary key,
+  4  B_loc varchar(50),
+  5  ifsc varchar(10) not null,
+  6  bname varchar(30),
+  7  empno number(5),
+  8  foreign key(empno) references Bemp(empno));
+create table B-branch
+              *
+ERROR at line 1:
+ORA-00922: missing or invalid option
+
+
+SQL> create table B_branch
+  2  (
+  3  bid number(5) primary key,
+  4  B_loc varchar(50),
+  5  ifsc varchar(10) not null,
+  6  bname varchar(30),
+  7  empno number(5),
+  8  foreign key(empno) references Bemp(empno));
+
+Table created.
+
+SQL>

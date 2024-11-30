@@ -1,0 +1,45 @@
+\\PLSQL  
+1.)
+
+SQL> declare
+  2  A varchar(30);
+  3  B number(10,2);
+  4  C date;
+  5  begin
+  6  select ename,sal,hiredate into A,B,C
+  7  from emp
+  8  where job='PRESIDENT';
+  9  dbms_output.put_line(A||' '||B||' '||C);
+ 10  end;
+ 11  /
+KING 5000 17-NOV-81
+
+PL/SQL procedure successfully completed.
+
+\\Procdure creation
+SQL> create or replace procedure xys
+  2  is
+  3  begin
+  4  dbms_output.put_line('HELLo');
+  5  end;
+  6  /
+
+Procedure created.
+
+SQL> exec xyz;
+
+2)
+SQL> create or replace procedure abcd
+  2  is
+  3  a varchar(30);
+  4  b number(10,2);
+  5  c date;
+  6  begin
+  7  select ename,sal,hiredate into a,b,c
+  8  from emp
+  9  where job='PRESIDENT';
+ 10  dbms_output.put_line(a||' '||b||' '||c);
+ 11  end;
+ 12  /
+
+Procedure created.

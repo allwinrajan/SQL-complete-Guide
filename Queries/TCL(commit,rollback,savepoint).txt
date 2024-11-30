@@ -1,0 +1,245 @@
+
+SQL*Plus: Release 11.2.0.1.0 Production on Mon Aug 19 17:55:16 2024
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: scott
+Enter password:
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> set lines 1000 pages 1000
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+
+SQL> insert into chock values(10004,'snickers',40,'candy');
+
+1 row created.
+
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+     10004 snickers                               40 candy
+
+SQL> insert into chock values(10005,'fivestar',25,'cadbury');
+
+1 row created.
+
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+     10004 snickers                               40 candy
+     10005 fivestar                               25 cadbury
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> select * from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+
+SQL> insert into chock values(10004,'snickers',40,'candy');
+
+1 row created.
+
+SQL> insert into chock values(10005,'fivestar',25,'cadbury');
+
+1 row created.
+
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+     10004 snickers                               40 candy
+     10005 fivestar                               25 cadbury
+
+SQL> savepoint s1;
+
+Savepoint created.
+
+SQL> insert into chock values(10006,'munch',30,'nestle');
+
+1 row created.
+
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+     10004 snickers                               40 candy
+     10005 fivestar                               25 cadbury
+     10006 munch                                  30 nestle
+
+6 rows selected.
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+
+SQL>
+SQL> insert into chock values(10004,'snickers',40,'candy');
+
+1 row created.
+
+SQL> insert into chock values(10005,'fivestar',25,'cadbury');
+
+1 row created.
+
+SQL> savepoint s1;
+
+Savepoint created.
+
+SQL> insert into chock values(10006,'munch',30,'nestle');
+
+1 row created.
+
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+     10004 snickers                               40 candy
+     10005 fivestar                               25 cadbury
+     10006 munch                                  30 nestle
+
+6 rows selected.
+
+SQL> insert into chock values(10007,'milkkey bar',35,'cadbury');
+
+1 row created.
+
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+     10004 snickers                               40 candy
+     10005 fivestar                               25 cadbury
+     10006 munch                                  30 nestle
+     10007 milkkey bar                            35 cadbury
+
+7 rows selected.
+
+SQL> savepoint s2;
+
+Savepoint created.
+
+SQL> insert into chock values(10008,'perek',15,'nestle');
+
+1 row created.
+
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+     10004 snickers                               40 candy
+     10005 fivestar                               25 cadbury
+     10006 munch                                  30 nestle
+     10007 milkkey bar                            35 cadbury
+     10008 perek                                  15 nestle
+
+8 rows selected.
+
+SQL> rollback to s2;
+
+Rollback complete.
+
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+     10004 snickers                               40 candy
+     10005 fivestar                               25 cadbury
+     10006 munch                                  30 nestle
+     10007 milkkey bar                            35 cadbury
+
+7 rows selected.
+
+SQL> rollback to s1;
+
+Rollback complete.
+
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+     10004 snickers                               40 candy
+     10005 fivestar                               25 cadbury
+
+SQL> commit;
+
+Commit complete.
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> select *
+  2  from chock;
+
+       CID CNAME                                COST BRAND
+---------- ------------------------------ ---------- --------------------------------------------------
+     10001 diary milk                            100 cadbury
+     10002 kit kat                               150 nestle
+     10003 kiss me                                20 parle
+     10004 snickers                               40 candy
+     10005 fivestar                               25 cadbury
+
+SQL>

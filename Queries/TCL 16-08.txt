@@ -1,0 +1,514 @@
+
+SQL*Plus: Release 11.2.0.1.0 Production on Fri Aug 16 16:29:29 2024
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: scott
+Enter password:
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+Enter user-name: scott
+Enter password:
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> swt lines 100 pages 100
+SP2-0734: unknown command beginning "swt lines ..." - rest of line ignored.
+SQL> set lines 100 pages 100
+SQL> show user
+USER is "SCOTT"
+SQL> create user nithick
+  2  identified by nithick07
+  3  ;
+identified by nithick07
+              *
+ERROR at line 2:
+ORA-01031: insufficient privileges
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> show user
+USER is "SYSTEM"
+SQL> create user nithick
+  2  identified by nithick07
+  3  ;
+
+User created.
+
+SQL> connect
+Enter user-name: nithick
+Enter password:
+ERROR:
+ORA-01045: user NITHICK lacks CREATE SESSION privilege; logon denied
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> show user
+USER is ""
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> grant connect to nithick;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: nithick
+Enter password:
+Connected.
+SQL> show user
+USER is "NITHICK"
+SQL> select *
+  2  from tab;
+
+no rows selected
+
+SQL> create table js
+  2  (
+  3  jid number(5)
+  4  );
+create table js
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> grant create table to nithick;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: nithick
+Enter password:
+Connected.
+SQL> create table js
+  2  ( jsid number(5) unique not null
+  3  );
+
+Table created.
+
+SQL> select *
+  2  from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+JS                             TABLE
+
+SQL> create view nit
+  2  as
+  3  select *
+  4  from js;
+create view nit
+            *
+ERROR at line 1:
+ORA-01031: insufficient privileges
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> grant create view to nithick;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: nithick
+Enter password:
+Connected.
+SQL> create view nit
+  2  as
+  3  select *
+  4  from js;
+
+View created.
+
+SQL> select *
+  2  from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+JS                             TABLE
+NIT                            VIEW
+
+SQL> desc js
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ JSID                                                  NOT NULL NUMBER(5)
+
+SQL> insert into js values(1001);
+insert into js values(1001)
+            *
+ERROR at line 1:
+ORA-01950: no privileges on tablespace 'USERS'
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> grant unlimited
+  2  tablespace to nithick;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: nithick
+Enter password:
+Connected.
+SQL> insert into js values(10001);
+
+1 row created.
+
+SQL> select *
+  2  from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+JS                             TABLE
+NIT                            VIEW
+
+SQL> select *
+  2  from js;
+
+      JSID
+----------
+     10001
+
+SQL> select nit
+  2  from js;
+select nit
+       *
+ERROR at line 1:
+ORA-00904: "NIT": invalid identifier
+
+
+SQL> select *
+  2  from nit;
+
+      JSID
+----------
+     10001
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> create user jas
+  2  identified by jas;
+
+User created.
+
+SQL> grant connect to jas;
+
+Grant succeeded.
+
+SQL> grant create table to jas;
+
+Grant succeeded.
+
+SQL> grant unlimetd
+  2  table to jas;
+grant unlimetd
+      *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege
+
+
+SQL> grant unlimeted
+  2  tablespace to jas;
+grant unlimeted
+      *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege
+
+
+SQL> connect
+Enter user-name: jas
+Enter password:
+Connected.
+SQL> create table prod
+  2  ( pid number(5),
+  3   pname vaechar(50)
+  4  cost number(7));
+ pname vaechar(50)
+              *
+ERROR at line 3:
+ORA-00907: missing right parenthesis
+
+
+SQL> create table prod
+  2  ( pid number(5),
+  3   pname varchar(50),
+  4  cost number(7));
+
+Table created.
+
+SQL> insert into prod values(1001,mobile 17000);
+insert into prod values(1001,mobile 17000)
+                                    *
+ERROR at line 1:
+ORA-00917: missing comma
+
+
+SQL> insert into prod values(1001,mobile,17000);
+insert into prod values(1001,mobile,17000)
+                             *
+ERROR at line 1:
+ORA-00984: column not allowed here
+
+
+SQL> desc prod
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ PID                                                            NUMBER(5)
+ PNAME                                                          VARCHAR2(50)
+ COST                                                           NUMBER(7)
+
+SQL> insert into prod
+  2  values(10001,mob,7000);
+values(10001,mob,7000)
+             *
+ERROR at line 2:
+ORA-00984: column not allowed here
+
+
+SQL> values(10001,'Mob',7000);
+SP2-0734: unknown command beginning "values(100..." - rest of line ignored.
+SQL> insert into prod
+  2  values(10001,'Mob',7000);
+insert into prod
+            *
+ERROR at line 1:
+ORA-01950: no privileges on tablespace 'USERS'
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> grant unlimited
+  2  tablespace to jas;
+
+Grant succeeded.
+
+SQL> grant create view to jas;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: jas
+Enter password:
+Connected.
+SQL> insert into pro values(10001,'Mobile',170000);
+insert into pro values(10001,'Mobile',170000)
+            *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> insert into prod values(10001,'Mobile',170000);
+
+1 row created.
+
+SQL> insert into prod values(10002,'laptop',470000);
+
+1 row created.
+
+SQL> insert into prod values(10003,'smartwatch',4000);
+
+1 row created.
+
+SQL> create view jas1
+  2  as
+  3  select *
+  4  from jas;
+from jas
+     *
+ERROR at line 4:
+ORA-00942: table or view does not exist
+
+
+SQL> select *
+  2  from prod;
+
+       PID PNAME                                                    COST
+---------- -------------------------------------------------- ----------
+     10001 Mobile                                                 170000
+     10002 laptop                                                 470000
+     10003 smartwatch                                               4000
+
+SQL> create view jas1
+  2  as
+  3  select *
+  4  from prod;
+
+View created.
+
+SQL> select *
+  2  from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+JAS1                           VIEW
+PROD                           TABLE
+
+SQL> grant select,update,delete,insert
+  2  on jas1
+  3  to scott;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: scott
+Enter password:
+Connected.
+SQL> select *
+  2  from jas.jas1;
+
+       PID PNAME                                                    COST
+---------- -------------------------------------------------- ----------
+     10001 Mobile                                                 170000
+     10002 laptop                                                 470000
+     10003 smartwatch                                               4000
+
+SQL> insert into jas.jas1 values(10003,'Airpods',2000);
+
+1 row created.
+
+SQL> select *
+  2  from jas.jas1;
+
+       PID PNAME                                                    COST
+---------- -------------------------------------------------- ----------
+     10003 Airpods                                                  2000
+     10001 Mobile                                                 170000
+     10002 laptop                                                 470000
+     10003 smartwatch                                               4000
+
+SQL> create user Dini
+  2
+SQL> create user Dini
+  2  identified by Dini;
+identified by Dini
+              *
+ERROR at line 2:
+ORA-01031: insufficient privileges
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> create user Dini
+  2  identified by Dini;
+
+User created.
+
+SQL> grand connect to Dini;
+SP2-0734: unknown command beginning "grand conn..." - rest of line ignored.
+SQL> grant connect to Dini;
+
+Grant succeeded.
+
+SQL> grant create table to Dini;
+
+Grant succeeded.
+
+SQL> grant create view to Dini;
+
+Grant succeeded.
+
+SQL> grant unlimited tablespace to Dini;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: Dini
+Enter password:
+Connected.
+SQL> create table product1( p_id number(5) unique not null, p_name varchar(30) not null, p_cost number (30.2) not null);
+create table product1( p_id number(5) unique not null, p_name varchar(30) not null, p_cost number (30.2) not null)
+                                                                                                   *
+ERROR at line 1:
+ORA-02017: integer value required
+
+
+SQL> create table product1( p_id number(5) unique not null, p_name varchar(30) not null, p_cost number (30,2) not null);
+
+Table created.
+
+SQL> instert into product1 values(101,'sopes',400);
+SP2-0734: unknown command beginning "instert in..." - rest of line ignored.
+SQL> insert into product1 values(101,'sopes',400);
+
+1 row created.
+
+SQL> insert into product1 values(102,'powders',300);
+
+1 row created.
+
+SQL> insert into product1 values(103,'shampoo',450);
+
+1 row created.
+
+SQL> create view Dini1
+  2  as
+  3  select * from Dini;
+select * from Dini
+              *
+ERROR at line 3:
+ORA-00942: table or view does not exist
+
+
+SQL> create view Dini1
+  2  as
+  3  select * from product1;
+
+View created.
+
+SQL> select *
+  2  from Dini;
+from Dini
+     *
+ERROR at line 2:
+ORA-00942: table or view does not exist
+
+
+SQL> connect
+Enter user-name: Dini
+Enter password:
+Connected.
+SQL> select *
+  2  from Dini;
+from Dini
+     *
+ERROR at line 2:
+ORA-00942: table or view does not exist
+
+
+SQL>

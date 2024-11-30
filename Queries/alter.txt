@@ -1,0 +1,176 @@
+
+SQL*Plus: Release 11.2.0.1.0 Production on Mon Aug 12 17:39:46 2024
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: scott
+Enter password:
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> set lines 100 pages 100
+SQL> select *
+  2  from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BEMP                           TABLE
+BONUS                          TABLE
+BRAND                          TABLE
+B_ACC                          TABLE
+B_BRANCH                       TABLE
+B_CUST                         TABLE
+CHOCK                          TABLE
+COUNTRIES                      TABLE
+CUST                           TABLE
+DEPARTMENT                     TABLE
+DEPT                           TABLE
+EMP                            TABLE
+EMPLOYEES                      TABLE
+JOBS                           TABLE
+LOC                            TABLE
+PROD                           TABLE
+REGIONS                        TABLE
+SALGRADE                       TABLE
+TRANSC                         TABLE
+WASTE                          TABLE
+
+20 rows selected.
+
+SQL> drop table employees;
+drop table employees
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys
+
+
+SQL> drop table emp;
+
+Table dropped.
+
+SQL> select *
+  2  from table;
+from table
+         *
+ERROR at line 2:
+ORA-00906: missing left parenthesis
+
+
+SQL> select *
+  2  from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BEMP                           TABLE
+BIN$tTR5a7SnSJWAsdXXQiCOXg==$0 TABLE
+BONUS                          TABLE
+BRAND                          TABLE
+B_ACC                          TABLE
+B_BRANCH                       TABLE
+B_CUST                         TABLE
+CHOCK                          TABLE
+COUNTRIES                      TABLE
+CUST                           TABLE
+DEPARTMENT                     TABLE
+DEPT                           TABLE
+EMPLOYEES                      TABLE
+JOBS                           TABLE
+LOC                            TABLE
+PROD                           TABLE
+REGIONS                        TABLE
+SALGRADE                       TABLE
+TRANSC                         TABLE
+WASTE                          TABLE
+
+20 rows selected.
+
+SQL> flashback table emp
+  2  to before drop;
+
+Flashback complete.
+
+SQL> select *
+  2  from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BEMP                           TABLE
+BONUS                          TABLE
+BRAND                          TABLE
+B_ACC                          TABLE
+B_BRANCH                       TABLE
+B_CUST                         TABLE
+CHOCK                          TABLE
+COUNTRIES                      TABLE
+CUST                           TABLE
+DEPARTMENT                     TABLE
+DEPT                           TABLE
+EMP                            TABLE
+EMPLOYEES                      TABLE
+JOBS                           TABLE
+LOC                            TABLE
+PROD                           TABLE
+REGIONS                        TABLE
+SALGRADE                       TABLE
+TRANSC                         TABLE
+WASTE                          TABLE
+
+20 rows selected.
+
+SQL> alter table prod
+  2  alter table prod
+  3
+SQL> desc dept;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ DEPTNO                                                NOT NULL NUMBER(2)
+ DNAME                                                          VARCHAR2(14)
+ LOC                                                            VARCHAR2(13)
+
+SQL> alter table prod
+  2  add deptno number(2) not null;
+
+Table altered.
+
+SQL> alter table prod
+  2  add foreign key(deptno),
+  3  foreign key(deptno) references dept(deptno);
+add foreign key(deptno),
+                       *
+ERROR at line 2:
+ORA-00905: missing keyword
+
+
+SQL> alter table prod
+  2  add foreign key(deptno) referencess dept(deptno);
+add foreign key(deptno) referencess dept(deptno)
+                        *
+ERROR at line 2:
+ORA-00905: missing keyword
+
+
+SQL> alter table prod
+  2  add foreign key(deptno),
+  3  add foreign key(deptno) referencess dept(deptno);
+add foreign key(deptno),
+                       *
+ERROR at line 2:
+ORA-00905: missing keyword
+
+
+SQL> alter table prod
+  2  add foreign key(deptno) references dept(deptno);
+
+Table altered.
+
+SQL> desc prod;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ PID                                                   NOT NULL NUMBER(5)
+ PNAME                                                          VARCHAR2(100)
+ COST                                                           NUMBER(10,2)
+ DEPTNO                                                NOT NULL NUMBER(2)
+
+SQL> add foreign key(deptno)

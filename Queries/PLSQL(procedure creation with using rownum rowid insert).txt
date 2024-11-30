@@ -1,0 +1,54 @@
+\\CREATE PROCEDURE USING ROWNUM
+
+1.)
+
+SQL> create or replace procedure rm123
+  2  (rmm in number)
+  3  is
+  4  a varchar(50);
+  5  b date;
+  6  c varchar(50);
+  7  begin
+  8  select ename ,hiredate,sal into a,b,c
+  9  from (select emp.*, rownum as slno from emp)
+ 10  where slno=rmm;
+ 11  dbms_output.put_line(a||' '||b||' '||c);
+ 12  end;
+ 13  /
+
+Procedure created.
+
+SQL> exec rm123(3);
+JONES 02-APR-81 2975
+
+2.)
+//DELETE RECORD USING ROWID WITH USING PARAMETERS
+
+SQL> create or replace procedure rd1
+  2  (rdd in number)
+  3  is
+  4  begin
+  5  delete
+  6  from emp e1
+  7  where (select count(distinct rowid) from emp e2 where e1.rowid>e2.rowid)=rdd;
+  8  end;
+  9  /
+
+Procedure created.
+
+SQL> exec rd1(3);
+
+PL/SQL procedure successfully completed.
+
+3.)
+//Insert a record using parameters
+
+SQL> create or replace procedure dep1
+  2  (dp1 in number,dp2 in varchar)
+  3  is
+  4  begin
+  5  insert into dept values(dp1,dp2);
+  6  end;
+  7  /
+
+Procedure created.

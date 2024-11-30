@@ -1,0 +1,92 @@
+//creatin triggers using if condition...
+
+SQL> create or replace trigger trc
+  2  before
+  3  update or insert
+  4  on tranc
+  5  for each row
+  6  enable
+  7  begin
+  8  if :new.t_status='SUCCESS' then
+  9  insert into t_success values('YES',sysdate);
+ 10  else
+ 11  insert into t_failure values('NO...',sysdate);
+ 12  end if;
+ 13  end;
+ 14  /
+
+Trigger created.
+SQL> select * from tranc;
+
+no rows selected
+
+SQL> insert into tranc values('SUCCESS');
+
+1 row created.
+
+SQL> select * from t_success;
+
+STATUS                                             T_DATE
+-------------------------------------------------- ---------
+YES
+
+
+SQL> create or replace trigger std
+  2  before
+  3  update or insert
+  4  on std_marks
+  5  for each row
+  6  enable
+  7  begin
+  8  if :new.score>=0 and :new.score<=35 then
+  9  insert into fail values('AJAMA');
+ 10  elsif :new.score>35 and :new.score<60 then
+ 11  insert into pass values('OK');
+ 12  elsif :new.score>60 and :new.score<80 then
+ 13  insert into fstclas values('good');
+ 14  else
+ 15  insert into distinc values('AWEsome');
+ 16  end if;
+ 17  end;
+ 18  /
+Trigger created.
+
+SQL> insert into std_marks values(85);
+
+1 row created.
+
+SQL> select * from distinc;
+
+STATUS
+------------------------------
+AWEsome
+
+SQL> insert into std_marks values(32);
+
+1 row created.
+
+SQL> select * from fail;
+
+STATUS
+------------------------------
+AJAMA
+
+SQL> insert into std_marks values(57);
+
+1 row created.
+
+SQL> select * from pass;
+
+STATUS
+------------------------------
+OK
+
+SQL> insert into std_marks values(77);
+
+1 row created.
+
+SQL> select * from fstclas;
+
+STATUS
+------------------------------
+good

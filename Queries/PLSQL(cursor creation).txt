@@ -1,0 +1,70 @@
+//CURSOR CREATION
+
+create procedure cur
+is
+cursor jas is select ename,sal,hiredate from emp;
+A varchar(50);
+B number(10,2);
+C date;
+begin
+open jas;
+loop
+fetch jas into A,B,C;
+exit when jas%notfound;
+dbms_output.put_line(A||' '||B||' '||C);
+end loop;
+close jas;
+end;
+/
+
+Procedure created.
+
+SQL> exec cur;
+SMITH 850 17-DEC-80
+ALLEN 1650 20-FEB-81
+JONES 3025 02-APR-81
+BLAKE 2900 01-MAY-81
+CLARK 2500 09-JUN-81
+SCOTT 3050 19-APR-87
+KING 5050 17-NOV-81
+TURNER 1550 08-SEP-81
+ADAMS 1150 23-MAY-87
+JAMES 1000 03-DEC-81
+FORD 3400 03-DEC-81
+MILLER 1415 23-JAN-82
+
+PL/SQL procedure successfully completed.
+
+create procedure join
+is
+cursor jin is select emp.ename,dept.loc  from emp,dept where emp.deptno=dept.deptno;
+A varchar(50);
+B varchar(40);
+begin
+open jin;
+loop
+fetch jin into A,B;
+exit when jin%notfound;
+dbms_output.put_line(A||' '||B);
+end loop;
+close jin;
+end;
+/
+
+Procedure created.
+
+SQL> exec join;
+CLARK NEW YORK
+MILLER NEW YORK
+KING NEW YORK
+JONES Ramnad
+SMITH Ramnad
+SCOTT Ramnad
+FORD Ramnad
+ADAMS Ramnad
+JAMES CHICAGO
+TURNER CHICAGO
+ALLEN CHICAGO
+BLAKE CHICAGO
+
+PL/SQL procedure successfully completed.

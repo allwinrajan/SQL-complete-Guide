@@ -1,0 +1,157 @@
+
+SQL*Plus: Release 11.2.0.1.0 Production on Fri Jul 26 17:43:18 2024
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: scott
+Enter password:
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+Enter user-name: scott
+Enter password:
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> set lines 100 pages 100
+SQL> select *
+  2  from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+
+14 rows selected.
+
+SQL> select max(sal)
+  2  from emp;
+
+  MAX(SAL)
+----------
+      5000
+
+SQL> select max(sal)
+  2  from emp
+  3  where sal<( select max(sal) from emp;));
+where sal<( select max(sal) from emp;))
+                                    *
+ERROR at line 3:
+ORA-00911: invalid character
+
+
+SQL> select max(sal)
+  2  from emp
+  3  where sal<(select max(sal) from emp
+  4  where sal<(select max(sal) from emp));
+
+  MAX(SAL)
+----------
+      2975
+
+SQL> select max(sal)
+  2  from emp
+  3  where sal<(select max(sal) from emp ));
+where sal<(select max(sal) from emp ))
+                                     *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select max(sal)
+  2  from emp
+  3  where sal<(select max(sal) from emp );
+
+  MAX(SAL)
+----------
+      3000
+
+SQL> select max(sal)
+  2  from emp
+  3  where sal<(select max(sal)
+  4  frpm emp
+  5  where sal < ( select max(sal) from emp
+  6  where sal < ( select max(sal) from emp)));
+frpm emp
+     *
+ERROR at line 4:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select max(sal)
+  2  from emp
+  3  where sal < ( select max(sal) from emp
+  4  where sal < ( select max(sal) from emp
+  5  where sal < ( select max(sal) from emp)));
+
+  MAX(SAL)
+----------
+      2850
+
+SQL> select min(sal)
+  2  from emp
+  3  where sal > ( select min(sal) from emp
+  4  where sal < ( select min (sal ) from emp));
+
+  MIN(SAL)
+----------
+
+
+SQL> select min(sal)
+  2  from emp
+  3  where sal>( select min(sal) from emp
+  4  where sal>( select min(sal) from emp));
+
+  MIN(SAL)
+----------
+      1100
+
+SQL> select dname
+  2  drom dept
+  3  where deptno in( select deptno from emp where sal=(select min(sal) from emp where sal  > ( select min(sal) from emp)));
+drom dept
+     *
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select dname
+  2  from dept
+  3  where deptno in ( select deptno from emp
+  4  where sal =( select min(sal) from emp
+  5  where sal>(select min(sal) from emp)));
+
+DNAME
+--------------
+SALES
+
+SQL> select dname
+  2  from emp
+  3  where deptno in ( select deptno from emp
+  4  where sal=( select max(sal)
+  5  from emp
+  6  where sal<(select max(sal) from emp
+  7  where sal<(select max(sal) from emp
+  8  where sal <(select mac(sal) from emp))));
+where sal <(select mac(sal) from emp))))
+                                       *
+ERROR at line 8:
+ORA-00907: missing right parenthesis
+
+
+SQL>

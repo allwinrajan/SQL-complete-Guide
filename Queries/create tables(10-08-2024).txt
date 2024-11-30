@@ -1,0 +1,218 @@
+
+SQL*Plus: Release 11.2.0.1.0 Production on Sat Aug 10 17:19:15 2024
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: scott
+Enter password:
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> select *
+  2  from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BEMP                           TABLE
+BONUS                          TABLE
+BRAND                          TABLE
+B_ACC                          TABLE
+B_BRANCH                       TABLE
+B_CUST                         TABLE
+CHOCK                          TABLE
+CUST                           TABLE
+DEPT                           TABLE
+EMP                            TABLE
+PROD                           TABLE
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+SALGRADE                       TABLE
+TRANSC                         TABLE
+
+13 rows selected.
+
+SQL> cretate table jobs
+SP2-0734: unknown command beginning "cretate ta..." - rest of line ignored.
+SQL> create table jobs
+  2  (
+  3  job_id primary key,
+  4  job_title varchar(50) not null,
+  5  min_sal number(7) not null,
+  6  max_sal number(7) not null);
+job_id primary key,
+*
+ERROR at line 3:
+ORA-02263: need to specify the datatype for this column
+
+
+SQL> create table jobs
+  2  (
+  3  job_id number(5) primary key,
+  4  job_title varchar(50) not null,
+  5  min_sal number(7) not null,
+  6  max_sal number(7) not null);
+
+Table created.
+
+SQL> create table employees
+  2  ( E_id number(5) primary key,
+  3   E_name varchar(50) not null,
+  4  I_name varchar(40) not null,
+  5  email varchar(30) unique not null,
+  6  ph_no number(10) unique not null,
+  7  Doj date
+  8  job_id number(5),
+  9  foreign key(job_id) references jobs(jobs));
+job_id number(5),
+*
+ERROR at line 8:
+ORA-00907: missing right parenthesis
+
+
+SQL> create table employees
+  2  ( E_id number(5) primary key,
+  3   E_name varchar(50) not null,
+  4  I_name varchar(40) not null,
+  5  email varchar(30) unique not null,
+  6  ph_no number(10) unique not null,
+  7  Doj date
+  8  job_id number(5),
+  9
+SQL> create table employees
+  2  ( E_id number(5) primary key,
+  3   E_name varchar(50) not null,
+  4  I_name varchar(40) not null,
+  5  email varchar(30) unique not null,
+  6  ph_no number(10) unique not null,
+  7  Doj date,
+  8  job_id number(5),
+  9  foreign key(job_id) references jobs(job_id));
+
+Table created.
+
+SQL> create table department
+  2  (
+  3  dept_id number(5) unique not null,
+  4  F_name varchar(50),
+  5  L_name narchar(50),
+  6  realtionship varchar(50),
+  7  E_id number(5),
+  8  foreign key(E_id) references employees(E_id));
+L_name narchar(50),
+              *
+ERROR at line 5:
+ORA-00907: missing right parenthesis
+
+
+SQL> create table department
+  2  (
+  3  dept_id number(5) unique not null,
+  4  F_name varchar(50),
+  5  L_name varchar(50),
+  6  realtionship varchar(50),
+  7  E_id number(5),
+  8  foreign key(E_id) references employees(E_id));
+
+Table created.
+
+SQL> create table regions
+  2  (
+  3  reg_id number(7) not null,
+  4  reg_id number(7) not null,
+  5
+SQL> create table regions
+  2  (
+  3  reg_id number(7) primary key not null
+  4  reg_name varchar(50));
+reg_name varchar(50))
+*
+ERROR at line 4:
+ORA-00907: missing right parenthesis
+
+
+SQL> create table regions
+  2  (
+  3  reg_id number(7) primary key not null
+  4  reg_name varchar(50));
+reg_name varchar(50))
+*
+ERROR at line 4:
+ORA-00907: missing right parenthesis
+
+
+SQL> create table regions
+  2  (
+  3  reg_id number(7) primary key,
+  4  reg_name varchar(50));
+
+Table created.
+
+SQL> create table countries
+  2  (
+  3  country_id number(7) primary key,
+  4  count_name varchar(50),
+  5  reg_id number(7),
+  6  foreign key(reg_id) references regions(reg_id));
+
+Table created.
+
+SQL> create table loc
+  2  (
+  3  loc_id number(7) primary key,
+  4  str_address varchar(50),
+  5  postel_code number(10) not null,
+  6  country_id numbe(7),
+  7  foreign key(country_id) references countries(country_id));
+country_id numbe(7),
+                *
+ERROR at line 6:
+ ORA-00907: missing right parenthesis
+
+
+SQL> create table loc
+  2  (
+  3  loc_id number(7) primary key,
+  4  str_address varchar(50),
+  5  postel_code number(10) not null,
+  6  country_id number(7),
+  7  foreign key(country_id) references countries(country_id));
+
+Table created.
+
+SQL> create table waste
+  2  (
+  3  job_id number(5),
+  4  foreign key(job_id) references jobs(job_id),
+  5  E-id number(5),
+  6  foreign key(E_id) references employees(E_id),
+  7  dept_id number(5),
+  8  foreign key(dept_id) references department(dept_id),
+  9  reg_id number(7),
+ 10  foreign key(reg_id) references regions(reg_id),
+ 11  loc_id number(7),
+ 12  foreign key(loc_id) references loc(loc_id));
+E-id number(5),
+ *
+ERROR at line 5:
+ORA-00902: invalid datatype
+
+
+SQL> create table waste
+  2  (
+  3  job_id number(5),
+  4  foreign key(job_id) references jobs(job_id),
+  5  E_id number(5),
+  6  foreign key(E_id) references employees(E_id),
+  7  dept_id number(5),
+  8  foreign key(dept_id) references department(dept_id),
+  9  reg_id number(7),
+ 10  foreign key(reg_id) references regions(reg_id),
+ 11  loc_id number(7),
+ 12  foreign key(loc_id) references loc(loc_id));
+
+Table created.
+
+SQL>

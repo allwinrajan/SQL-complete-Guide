@@ -1,0 +1,158 @@
+
+SQL*Plus: Release 11.2.0.1.0 Production on Wed Jul 10 05:48:06 2024
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: scott
+Enter password:
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> select ename,job,deptno
+  2  from emp
+  3  where job ='MANAGER' AND (deptno=10 OR deptno=30);
+
+ENAME      JOB           DEPTNO
+---------- --------- ----------
+BLAKE      MANAGER           30
+CLARK      MANAGER           10
+
+SQL> select ename,job,deptno
+  2  from emp
+  3  where job ='CLERK' AND (deptno=10 OR deptno=20 OR deptno=30);
+
+ENAME      JOB           DEPTNO
+---------- --------- ----------
+SMITH      CLERK             20
+ADAMS      CLERK             20
+JAMES      CLERK             30
+MILLER     CLERK             10
+
+SQL> select ename,job,deptno
+  2  from emp
+  3  where deptno =10 AND (job='MANAGER' OR job='CLERK');
+
+ENAME      JOB           DEPTNO
+---------- --------- ----------
+CLARK      MANAGER           10
+MILLER     CLERK             10
+
+SQL> select ename,job,deptno,sal
+  2  from emp
+  3  where (job ='MANAGER' OR job='SALESMAN') AND (deptno=10 OR deptno=30) AND sal >1800;
+
+ENAME      JOB           DEPTNO        SAL
+---------- --------- ---------- ----------
+BLAKE      MANAGER           30       2850
+CLARK      MANAGER           10       2450
+
+SQL> select ename,deptno
+  2  from emp
+  3  where deptno NOT In (10,20);
+
+ENAME          DEPTNO
+---------- ----------
+ALLEN              30
+WARD               30
+MARTIN             30
+BLAKE              30
+TURNER             30
+JAMES              30
+
+6 rows selected.
+
+SQL> where deptno NOT In (10,20);
+SP2-0734: unknown command beginning "where dept..." - rest of line ignored.
+SQL>
+SQL> select ename,deptno,job
+  2  from emp
+  3  where deptno=10;
+
+ENAME          DEPTNO JOB
+---------- ---------- ---------
+CLARK              10 MANAGER
+KING               10 PRESIDENT
+MILLER             10 CLERK
+
+SQL> select ename,deptno,job
+  2  from emp
+  3  where deptno=20 AND sal < 3000;
+
+ENAME          DEPTNO JOB
+---------- ---------- ---------
+SMITH              20 CLERK
+JONES              20 MANAGER
+ADAMS              20 CLERK
+
+SQL> select ename,deptno,job
+  2  from emp
+  3  where job ='MANAGER' AND dept no=10;
+where job ='MANAGER' AND dept no=10
+                              *
+ERROR at line 3:
+ORA-00920: invalid relational operator
+
+
+SQL> select ename,deptno,job
+  2  from emp
+  3  where job ='MANAGER' AND deptno=10;
+
+ENAME          DEPTNO JOB
+---------- ---------- ---------
+CLARK              10 MANAGER
+
+SQL> select ename,sal
+  2  from emp
+  3  where deptno=20 AND sal <3000;
+
+ENAME             SAL
+---------- ----------
+SMITH             800
+JONES            2975
+ADAMS            1100
+
+SQL> select ename,sal
+  2  from emp
+  3  where sal > 1250 AND sal <3000;
+
+ENAME             SAL
+---------- ----------
+ALLEN            1600
+JONES            2975
+BLAKE            2850
+CLARK            2450
+TURNER           1500
+MILLER           1300
+
+6 rows selected.
+
+SQL> select ename,deptno
+  2  from emp
+  3  where deptno=10 OR deptno=20;
+
+ENAME          DEPTNO
+---------- ----------
+SMITH              20
+JONES              20
+CLARK              10
+SCOTT              20
+KING               10
+ADAMS              20
+FORD               20
+MILLER             10
+
+8 rows selected.
+
+SQL> select ename,sal,deptno
+  2  from emp
+  3  where deptno=20 AND sal >1250 AND sal < 4000;
+
+ENAME             SAL     DEPTNO
+---------- ---------- ----------
+JONES            2975         20
+SCOTT            3000         20
+FORD             3000         20
+
+SQL>

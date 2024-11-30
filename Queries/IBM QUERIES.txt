@@ -1,0 +1,15 @@
+SELECT name,asset_type,
+ROUND(sum_cash_flows,2) AS sum_cash_flows
+FROM (SELECT b.name,'Bond' As asset_type,SUM(bp.cash_flows) AS sum_cash-flows
+      From bonds b
+      JOIN bond_payments bp ON b.id=bp.bond_id
+      GROUB BY b.name
+    
+     UNION ALL
+
+    SELECT s.name,'Stock' AS asset_type,SUM(sp.dividend) AS sum_cash_flows
+    FROM stocks s
+    JOIN stock_payments sp ON sid=sp.stock_id
+    GROUP BY s.name) As asset_data
+WHERE sum_cash_flows> 2000.00
+ORDER BY name ASC;

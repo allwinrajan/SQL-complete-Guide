@@ -1,0 +1,36 @@
+\\ procedure creation with using parameter
+
+1.) 
+
+SQL> set serveroutput on
+SQL> create or replace procedure emppro
+  2  (ep in number)
+  3  is
+  4  begin
+  5  delete
+  6  from emp
+  7  where empno=ep;
+  8  end;
+  9  /
+
+Procedure created.
+
+SQL> exec emppro(7521);
+
+PL/SQL procedure successfully completed.
+
+2.)
+
+SQL> create or replace procedure empl
+  2  (empp in number)
+  3  is
+  4  a varchar(40);
+  5  b number(10,2);
+  6  c date;
+  7  begin
+  8  select ename,sal,hiredate into a,b,c
+  9  from emp
+ 10  where empno=empp;
+ 11  dbms_output.put_line(a||'  '||b||' '||c);
+ 12  end;
+ 13  /

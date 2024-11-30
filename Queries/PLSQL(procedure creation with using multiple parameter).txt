@@ -1,0 +1,56 @@
+//create procedure with using multiple parameters..
+
+1.)
+
+SQL> create or replace procedure per12
+  2  (em12 in number)
+  3  is
+  4  begin
+  5  update emp
+  6  set sal=sal+sal*5/100
+  7  where empno=em12;
+  8  end;
+  9  /
+
+Procedure created.
+
+SQL> exec per12(7934);
+
+2.)
+
+SQL> create or replace procedure per
+  2  (per1 in number,per2 in number)
+  3  is
+  4  begin
+  5  update emp
+  6  set sal=sal+sal*per2/100
+  7  where empno=per1;
+  8  end;
+  9  /
+
+Procedure created.
+
+SQL> exec per(7902,10);
+
+3.)
+SQL> create or replace procedure disp12
+  2  (dsp in number ,dsp1 in number)
+  3  is
+  4  a varchar(50);
+  5  b number(10,2);
+  6  c date;
+  7  begin
+  8  update emp
+  9  set sal=sal+sal*dsp1/100
+ 10  where empno=dsp;
+ 11
+ 12  select ename,sal,hiredate into a,b,c
+ 13  from emp
+ 14  where empno=dsp;
+ 15  dbms_output.put_line(a||' '||b||' '||c);
+ 16  end;
+ 17  /
+
+Procedure created.
+
+SQL> exec disp12(7900,10);
